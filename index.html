@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Superbook - Job</title>
+    </head>
+    <style>
+        body {
+            background-color: rgb(235,236,241);
+            font-family: arial;
+            color: rgb(0, 0, 0);
+        }
+        .center {
+            text-align: CENTER;
+        }
+        .centerCenter {
+            text-align: CENTER;
+            margin-top: 5%;
+        }
+        .startButton {
+            margin-left: 40%;
+            width: 20%;
+            height: 40px;
+            margin-top: 40px;
+            background-color: rgb(99, 181, 169);
+            border-radius: 2px;
+            border: none;
+            color: rgb(255, 255, 255);
+            font-size: 17px;
+        }
+        .Button {
+            margin-left: 4%;
+            width: 20%;
+            height: 40px;
+            background-color: rgb(99, 181, 169);
+            border-radius: 2px;
+            border: none;
+            float: left;
+            color: rgb(255, 255, 255);
+            font-size: 17px;
+        }
+        #backgroundAvg {
+            margin-left: 5%;
+            margin-bottom: 10px;
+            width: 90%;
+            height: 20px;
+            background-color: rgb(212, 212, 212);
+            position: absolute;
+            text-align: CENTER;
+        }
+        #Avg {
+            margin-left: 5%;
+            margin-bottom: 10px;
+            width: 90%;
+            height: 20px;
+            position: absolute;
+            background-color: rgb(0, 209, 136);
+            text-align: CENTER;
+        }
+    </style>
+    <body>
+        <div class = "scene">
+            <h1 class = "center">Math Game</h1>
+            <button class = "startButton" onclick = "javascript: changePage(1);">Start</button>
+        </div>
+        <div class = "scene">
+            <h3 class = "centerCenter" id = "q"></h3>
+            <p class = "center">Correct: <span id = "correct">0/0</span> || Difficulty: <span id = "difficulty">1</span></p>
+            <div id = "backgroundAvg"></div>
+            <div id = "Avg">100</div>
+            <br>
+            <br>
+            <button class = "Button" onclick = "updateCor(1); play();"><span id = "q1">Q</span></button>
+            <button class = "Button" onclick = "updateCor(2); play();"><span id = "q2">Q</span></button>
+            <button class = "Button" onclick = "updateCor(3); play();"><span id = "q3">Q</span></button>
+            <button class = "Button" onclick = "updateCor(4); play(); "><span id = "q4">Q</span></button>
+        </div>
+        <script>
+        function round(number) {
+            return Math.round(number)
+        }
+        function random(min, max) {
+            return min + Math.random(0, 1) * (max - min)
+        }
+        var scenes = document.getElementsByClassName('scene');
+        var q = round(random(0, 1));
+        var a = [];
+        var cor = 0;
+        var incor = 0;
+        var rnCor = 0;
+        var diff = 1000;
+        function difference(number, max) {
+            if(random(0, 100) < 50) {
+                return number - round(random(1, max));
+            }else {
+                return number + round(random(1, max));
+            }
+        }
+        function play() {
+            q = round(random(0, 1));
+            if(q === 0) {
+                a = [round(random(10 * (diff/1000), 200 * diff/1000)), round(random(10 * (diff/1000), 200 * diff/1000))];
+                document.getElementById("q").innerHTML = "What is " + a[0] + " + " + a[1];
+                var choosen = random(0, 100);
+                document.getElementById("q1").innerHTML = a[0] + a[1] + round(random(-10, 10));
+                document.getElementById("q2").innerHTML = a[0] + a[1] + round(random(-10, 10));
+                document.getElementById("q3").innerHTML = a[0] + a[1] + round(random(-10, 10));
+                document.getElementById("q4").innerHTML = a[0] + a[1] + round(random(-10, 10));
+                if(choosen < 25) {
+                    document.getElementById("q1").innerHTML = a[0] + a[1];
+                    rnCor = 1;
+                }else if(choosen < 50) {
+                    document.getElementById("q2").innerHTML = a[0] + a[1];
+                    rnCor = 2;
+                }else if(choosen < 75) {
+                    document.getElementById("q3").innerHTML = a[0] + a[1];
+                    rnCor = 3;
+                }else {
+                    document.getElementById("q4").innerHTML = a[0] + a[1];
+                    rnCor = 4;
+                }
+            }else if(q === 1) {
+                a = [round(random(2 * (diff/1000), 20 * diff/1000)), round(random(2 * (diff/1000), 20 * diff/1000))];
+                document.getElementById("q").innerHTML = "What is " + a[0] + " x " + a[1];
+                var choosen = random(0, 100);
+                document.getElementById("q1").innerHTML = difference(a[0] * a[1], 10);
+                document.getElementById("q2").innerHTML = difference(a[0] * a[1], 10);
+                document.getElementById("q3").innerHTML = difference(a[0] * a[1], 10);
+                document.getElementById("q4").innerHTML = difference(a[0] * a[1], 10);
+                if(choosen < 25) {
+                    document.getElementById("q1").innerHTML = a[0] * a[1];
+                    rnCor = 1;
+                }else if(choosen < 50) {
+                    document.getElementById("q2").innerHTML = a[0] * a[1];
+                    rnCor = 2;
+                }else if(choosen < 75) {
+                    document.getElementById("q3").innerHTML = a[0] * a[1];
+                    rnCor = 3;
+                }else {
+                    document.getElementById("q4").innerHTML = a[0] * a[1];
+                    rnCor = 4;
+                }
+            }
+            document.getElementById("Avg").style.width = (round((100/(cor + incor)) * cor))/1.1111111 + "%";
+            
+        }
+        function updateCor(button) {
+            if(button === rnCor) {
+                cor+=1;
+                diff+=10;
+            }else {
+                incor+=1;
+                if(diff > 500) {
+                    diff-=5;
+                }
+            }
+            document.getElementById("correct").innerHTML = cor + "/" + incor;
+            document.getElementById("difficulty").innerHTML = round((diff/10))/10;
+            document.getElementById("Avg").innerHTML = round((100/(cor + incor)) * cor);
+
+        }
+        function changePage(index) {
+            window.scroll(0, 0);
+            for (var i = 0; i < scenes.length ; i++) {
+                scenes[i].style.display = 'none';
+            }
+            scenes[index].style.display = 'block';
+        };
+        changePage(0);
+        play();
+
+    </script>
+    </body>
+</html>
