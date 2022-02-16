@@ -65,7 +65,8 @@
         </div>
         <div class = "scene">
             <h3 class = "centerCenter" id = "q"></h3>
-            <p class = "center">Correct: <span id = "correct">0/0</span> || Difficulty: <span id = "difficulty">1</span></p>
+            <p class = "center">Correct: <span id = "correct">0/0</span></p>
+            <p class = "center">Score: <span id = "score">0</span></p>
             <div id = "backgroundAvg"></div>
             <div id = "Avg">100</div>
             <br>
@@ -89,6 +90,7 @@
         var incor = 0;
         var rnCor = 0;
         var diff = 1000;
+        var score = 0;
         function difference(number, max) {
             if(random(0, 100) < 50) {
                 return number - round(random(1, max));
@@ -148,15 +150,19 @@
             if(button === rnCor) {
                 cor+=1;
                 diff+=10;
+                score+=10;
             }else {
                 incor+=1;
+                score-=round(10 - (round((100/(cor + incor)) * cor))/9);
                 if(diff > 500) {
                     diff-=5;
                 }
             }
+            play();
             document.getElementById("correct").innerHTML = cor + "/" + incor;
             document.getElementById("difficulty").innerHTML = round((diff/10))/10;
             document.getElementById("Avg").innerHTML = round((100/(cor + incor)) * cor);
+            document.getElementById("score").innerHTML = score;
 
         }
         function changePage(index) {
