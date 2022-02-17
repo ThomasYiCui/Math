@@ -123,6 +123,7 @@
             <p class = "center"> Level: <span id = "level">1</span> || Gold: <span id = "gold">0</span></p>
             <button class = "Button" onclick = "upgrade(['damage', 5], 50);">Damage: 50</button>
             <button class = "Button" onclick = "upgrade(['hp', 25], 50);">Health: 50</button>
+            <button class = "Button" onclick = "upgrade(['armor', 1], 10);">Armor: 50</button>
             <button class = "startButton" onclick = "javascript: changePage(2);">I am ready!</button>
         </div>
         <div class = "scene">
@@ -138,7 +139,7 @@
             </div>
             <p class = "center">Correct: <span id = "correct">0/0</span></p>
             <p class = "center">Combo: <span id = "combo">0</span></p>
-            <p class = "center"> Level: <span id = "level">1</span> || Gold: <span id = "gold">0</span></p>
+            <p class = "center">Gold: <span id = "gold">0</span></p>
             
             <button class = "Button" onclick = "updateCor(1); play();"><span id = "q1">Q</span></button>
             <button class = "Button" onclick = "updateCor(2); play();"><span id = "q2">Q</span></button>
@@ -154,6 +155,16 @@
         // the random function
         function random(min, max) {
             return min + Math.random(0, 1) * (max - min)
+        }
+        
+        // the constrain function
+        function constrain(number, min, max) {
+            if(number < min) {
+                number = min;
+            }else if(number > max){
+                number = max;
+            }
+            return number;
         }
         
         // assign varibles
@@ -185,6 +196,8 @@
         var gold = 0;
         document.getElementById("gold").innerHTML = gold;
         var eGold = 0;
+        var armor = 0;
+        var eArmor = 0;
         
         // difference function
         function difference(number, max) {
@@ -297,6 +310,9 @@
                 gold+=100;
                 changePage(1);
                 eGold+=100;
+                document.getElementById("Correct").style.animation = 'none';
+                document.getElementById("Correct").offsetHeight; /* trigger reflow */
+                document.getElementById("Correct").style.animation = null; 
             }else if(hp <= 0) {
                 hp = MaxHp;
                 eHp = eMaxHp;
@@ -348,7 +364,7 @@
                 cor+=1;
                 diff+=100;
                 combo+=1;
-                eHp-=damage + round(combo/3) + round(random(0, 5));
+                eHp-=constrain(damage + round(combo/3) + round(random(0, 5)) - eArmor, 0, Infinity);
                 document.getElementById("Correct").style.animation = 'none';
                 document.getElementById("Correct").offsetHeight; /* trigger reflow */
                 document.getElementById("Correct").style.animation = null; 
@@ -365,7 +381,7 @@
             // do a random to see if the player takes damage
             if(round(random(0, 100)) < ((100/(cor + incor)) * cor) + round(random(-80, 20))) {
                 eCombo+=1;
-                hp-=eDamage + round(eCombo/3) + round(random(0, 5));
+                hp-=constrain(eDamage + round(eCombo/3) + round(random(0, 5)) - armor, 0, Infinity);
             }else {
                 eCombo = 0;
             }
@@ -397,6 +413,9 @@
                     hp = MaxHp;
                     document.getElementById("Hp").innerHTML = hp;
                     document.getElementById("Hp").style.width = hp/(MaxHp/40) + "%";
+                }else if(type[0] === "armor") {
+                    armor+=type[1];
+                    gold-=cost;
                 }
                 // update the gold
                 document.getElementById("gold").innerHTML = gold;
