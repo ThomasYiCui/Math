@@ -96,6 +96,13 @@
             <button class = "startButton" onclick = "javascript: changePage(1);">Start</button>
         </div>
         <div class = "scene">
+            <h1 class = "center">Upgrade</h1>
+            <p class = "center"> Level: <span id = "level">1</span> || Gold: <span id = "gold">0</span></p>
+            <button class = "Button" onclick = "upgrade(['damage', 5], 50);">Damage: 50</button>
+            <button class = "Button" onclick = "upgrade(['hp', 5], 50);">Health: 50</button>
+            <button class = "startButton" onclick = "javascript: changePage(2);">I am ready!</button>
+        </div>
+        <div class = "scene">
             <div id = "backgroundHp"></div>
             <div id = "Hp">100</div>
             <div id = "EbackgroundHp"></div>
@@ -107,6 +114,7 @@
             </div>
             <p class = "center">Correct: <span id = "correct">0/0</span></p>
             <p class = "center"> Level: <span id = "level">1</span></p>
+            <p class = "center">Gold: <span id = "gold">0</span></p>
             
             <button class = "Button" onclick = "updateCor(1); play();"><span id = "q1">Q</span></button>
             <button class = "Button" onclick = "updateCor(2); play();"><span id = "q2">Q</span></button>
@@ -140,12 +148,17 @@
         document.getElementById("Hp").innerHTML = hp;
         var MaxHp = 100;
         document.getElementById("Hp").style.width = hp/(MaxHp/40) + "%";
+        var damage = 10;
         var eHp = 100;
         document.getElementById("EHp").style.width = eHp/(MaxHp/40) + "%";
         var eMaxHp = 100;
         document.getElementById("EHp").innerHTML = eHp;
+        var eDamage = 10;
         var level = 1;
         document.getElementById("level").innerHTML = level;
+        var gold = 0;
+        document.getElementById("gold").innerHTML = gold;
+        var eGold = 0;
         
         // difference function
         function difference(number, max) {
@@ -182,23 +195,34 @@
                     rnCor = 4;
                 }
             }else if(q === 1) {
+                // what the answer and questions will pick from
                 a = [round(random(2 * (diff/1000), 5 * diff/1000)), round(random(2 * (diff/1000), 5 * diff/1000))];
+                
+                // change the questions to match what a choose
                 document.getElementById("q").innerHTML = "What is " + a[0] + " x " + a[1];
+                
+                // the varible for who will have the answer
                 var choosen = random(0, 100);
+                
+                // change the q's to somewhere near the answer
                 document.getElementById("q1").innerHTML = difference(a[0] * a[1], 10);
                 document.getElementById("q2").innerHTML = difference(a[0] * a[1], 10);
                 document.getElementById("q3").innerHTML = difference(a[0] * a[1], 10);
                 document.getElementById("q4").innerHTML = difference(a[0] * a[1], 10);
                 if(choosen < 25) {
+                    // if q1 has the answer
                     document.getElementById("q1").innerHTML = a[0] * a[1];
                     rnCor = 1;
                 }else if(choosen < 50) {
+                    // if q2 has the answer
                     document.getElementById("q2").innerHTML = a[0] * a[1];
                     rnCor = 2;
                 }else if(choosen < 75) {
+                    // if q3 has the answet
                     document.getElementById("q3").innerHTML = a[0] * a[1];
                     rnCor = 3;
                 }else {
+                    // if q4 has the answer
                     document.getElementById("q4").innerHTML = a[0] * a[1];
                     rnCor = 4;
                 }
@@ -240,11 +264,33 @@
             }
             // if the enemys has died
             if(eHp <= 0) {
-                hp = 100;
-                eHp = 100;
+                hp = MaxHp;
+                eHp = eMaxHp;
                 level += 1;
                 document.getElementById("level").innerHTML = level;
+                gold+=100;
+                changePage(1);
+                eGold+=100;
+            }else if(hp <= 0) {
+                hp = MaxHp;
+                eHp = eMaxHp;
             }
+            if(eGold > 0) {
+                choose = round(random(0, 100));
+                if(choose < 50) {
+                    eMaxHp+=5;
+                    eGold-=50;
+                    eHp = eMaxHp;
+                    document.getElementById("EHp").innerHTML = eHp;
+                    document.getElementById("EHp").style.width = eHp/(MaxHp/40) + "%";
+                }else if(choose <= 100) {
+                    eDamage+=5;
+                    eGold-=50;
+                }
+            }
+            
+            // update the gold value
+            document.getElementById("gold").innerHTML = gold;
         }
         
         // update cor function
@@ -254,7 +300,7 @@
                 // do things if correct
                 cor+=1;
                 diff+=10;
-                eHp-=10;
+                eHp-=damage;
             }else {
                 // do things is not
                 incor+=1;
@@ -265,7 +311,7 @@
             
             // do a random to see if the player takes damage
             if(round(random(0, 100)) < ((100/(cor + incor)) * cor) + round(random(-80, 20))) {
-                hp-=10;
+                hp-=eDamage;
             }
             
             // redo the functions
@@ -277,6 +323,27 @@
             document.getElementById("Hp").style.width = hp/(MaxHp/40) + "%";
             document.getElementById("EHp").innerHTML = eHp;
             document.getElementById("EHp").style.width = eHp/(MaxHp/40) + "%";
+        }
+        
+        // upgrade function
+        function upgrade(type, cost) {
+            // if your gold is more then the cost
+            if(gold >= cost) {
+                // if the upgrade is damage
+                if(type[0] === "damage") {
+                    damage+=type[1];
+                    gold-=cost;
+                // if the upgrade is hp
+                }else if(type[0] === "hp") {
+                    MaxHp+=type[1];
+                    gold-=cost;
+                    hp = MaxHp;
+                    document.getElementById("Hp").innerHTML = hp;
+                    document.getElementById("Hp").style.width = hp/(MaxHp/40) + "%";
+                }
+                // update the gold
+                document.getElementById("gold").innerHTML = gold;
+            }
         }
         
         // change play function
