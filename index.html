@@ -49,6 +49,18 @@
             line-height: 60px;
             text-align: CENTER;
         }
+        #Correct {
+            background-color: rgb(0, 255, 0);
+            width: 100%;
+            height: 50px;
+            position: fixed;
+            top: 50%;
+            transform: translate(0, -50%);
+            opacity: 0%;
+            text-align: CENTER;
+            color: rgb(14, 140, 0);
+            font-size: 40px;
+        }
         #backgroundHp {
             margin-left: 5%;
             margin-bottom: 10px;
@@ -89,6 +101,17 @@
             text-align: CENTER;
             border-radius: 5px;
         }
+        @keyframes CorrectAnim {
+            0% {
+                opacity: 0%;
+            }
+            25% {
+                opacity: 100%;
+            }
+            100% {
+                opacity: 0%;
+            }
+        }
     </style>
     <body>
         <div class = "scene">
@@ -103,6 +126,7 @@
             <button class = "startButton" onclick = "javascript: changePage(2);">I am ready!</button>
         </div>
         <div class = "scene">
+            <div id = "Correct">Correct</div>
             <div id = "backgroundHp"></div>
             <div id = "Hp">100</div>
             <div id = "EbackgroundHp"></div>
@@ -143,6 +167,7 @@
         var rnCor = 0;
         var diff = 1000;
         var combo = 0;
+        var eCombo = 0;
         
         // enemys, player, and level stats
         var hp = 100;
@@ -322,8 +347,12 @@
                 // do things if correct
                 cor+=1;
                 diff+=100;
-                eHp-=damage;
                 combo+=1;
+                eHp-=damage + round(combo/3) + round(random(0, 5));
+                document.getElementById("Correct").style.animation = 'none';
+                document.getElementById("Correct").offsetHeight; /* trigger reflow */
+                document.getElementById("Correct").style.animation = null; 
+                document.getElementById("Correct").style.animation = 'CorrectAnim 2s';
             }else {
                 // do things is not
                 incor+=1;
@@ -335,7 +364,10 @@
             
             // do a random to see if the player takes damage
             if(round(random(0, 100)) < ((100/(cor + incor)) * cor) + round(random(-80, 20))) {
-                hp-=eDamage;
+                eCombo+=1;
+                hp-=eDamage + round(eCombo/3) + round(random(0, 5));
+            }else {
+                eCombo = 0;
             }
             
             // redo the functions
