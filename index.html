@@ -12,6 +12,7 @@
         }
         .center {
             text-align: CENTER;
+            margin-bottom: 2px;
         }
         .centerCenter {
             text-align: CENTER;
@@ -66,6 +67,18 @@
             color: rgb(14, 140, 0);
             font-size: 40px;
         }
+        #Incorrect {
+            background-color: rgb(255, 0, 0);
+            width: 100%;
+            height: 50px;
+            position: fixed;
+            top: 50%;
+            transform: translate(0, -50%);
+            opacity: 0%;
+            text-align: CENTER;
+            color: rgb(138, 0, 0);
+            font-size: 40px;
+        }
         #backgroundHp {
             margin-left: 5%;
             margin-bottom: 10px;
@@ -114,7 +127,7 @@
             position: absolute;
             margin-left: 50%;
         }
-        @keyframes CorrectAnim {
+        @keyframes Anim {
             0% {
                 opacity: 0%;
             }
@@ -129,6 +142,7 @@
     <body>
         <div class = "scene">
             <h1 class = "center">Math Game</h1>
+            <h2 class = "center">Name: </h2>
             <input id = "inputName">
             <br>
             <button class = "startButton" onclick = "javascript: changePage(1); updateName();">Start</button>
@@ -147,6 +161,7 @@
             <br>
             <br>
             <div id = "Correct">Correct</div>
+            <div id = "Incorrect">Incorrect</div>
             <div id = "backgroundHp"></div>
             <div id = "Hp">100</div>
             <div id = "EbackgroundHp"></div>
@@ -212,6 +227,18 @@
             "Dreavleecs",
             "Girida",
             "Eagybara",
+            "Antessex",
+            "Mooblud",
+            "Baboullopse",
+            "Hedgensodee",
+            "Kleoros",
+            "Ratalo",
+            "Doumnea",
+            "Ropsomite",
+            "Xodumea",
+            "Suwaursee",
+            "Elish",
+            "Camoose",
         ];
         
         // enemys, player, and level stats
@@ -377,6 +404,9 @@
                 document.getElementById("Correct").style.animation = 'none';
                 document.getElementById("Correct").offsetHeight; /* trigger reflow */
                 document.getElementById("Correct").style.animation = null; 
+                document.getElementById("Incorrect").style.animation = 'none';
+                document.getElementById("Incorrect").offsetHeight; /* trigger reflow */
+                document.getElementById("Incorrect").style.animation = null; 
             }else if(hp <= 0) {
                 hp = MaxHp;
                 eHp = eMaxHp;
@@ -420,7 +450,7 @@
                 document.getElementById("Correct").style.animation = 'none';
                 document.getElementById("Correct").offsetHeight; /* trigger reflow */
                 document.getElementById("Correct").style.animation = null; 
-                document.getElementById("Correct").style.animation = 'CorrectAnim 2s';
+                document.getElementById("Correct").style.animation = 'Anim 2s';
             }else {
                 // do things is not
                 incor+=1;
@@ -428,6 +458,10 @@
                     diff-=50;
                 }
                 combo = 0;
+                document.getElementById("Incorrect").style.animation = 'none';
+                document.getElementById("Incorrect").offsetHeight; /* trigger reflow */
+                document.getElementById("Incorrect").style.animation = null; 
+                document.getElementById("Incorrect").style.animation = 'Anim 2s';
             }
             
             // do a random to see if the player takes damage
