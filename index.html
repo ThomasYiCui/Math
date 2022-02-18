@@ -39,6 +39,11 @@
             color: rgb(255, 255, 255);
             font-size: 17px;
         }
+        #inputName {
+            background-color: rgb(230, 230, 230);
+            margin-left: 35%;
+            width: 30%;
+        }
         #ques {
             margin-left: 15%;
             width: 70%;
@@ -101,6 +106,14 @@
             text-align: CENTER;
             border-radius: 5px;
         }
+        #playerName {
+            position: absolute;
+            margin-left: 5%;
+        }
+        #enemyName {
+            position: absolute;
+            margin-left: 50%;
+        }
         @keyframes CorrectAnim {
             0% {
                 opacity: 0%;
@@ -116,7 +129,9 @@
     <body>
         <div class = "scene">
             <h1 class = "center">Math Game</h1>
-            <button class = "startButton" onclick = "javascript: changePage(1);">Start</button>
+            <input id = "inputName">
+            <br>
+            <button class = "startButton" onclick = "javascript: changePage(1); updateName();">Start</button>
         </div>
         <div class = "scene">
             <h1 class = "center">Upgrade</h1>
@@ -127,6 +142,10 @@
             <button class = "startButton" onclick = "javascript: changePage(2);">I am ready!</button>
         </div>
         <div class = "scene">
+            <p id = "playerName">Name</p>
+            <p id = "enemyName">Enemy Name</p>
+            <br>
+            <br>
             <div id = "Correct">Correct</div>
             <div id = "backgroundHp"></div>
             <div id = "Hp">100</div>
@@ -179,13 +198,28 @@
         var diff = 1000;
         var combo = 0;
         var eCombo = 0;
+        // names
+        var names = [
+            "Cridse",
+            "Jagudeocse",
+            "Sparranseel",
+            "Horoocaups",
+            "Geakodo",
+            "Loluar",
+            "Weapumadillo",
+            "Cleadaguin",
+            "Lemmusu",
+            "Dreavleecs",
+            "Girida",
+            "Eagybara",
+        ];
         
         // enemys, player, and level stats
         var hp = 100;
         document.getElementById("Hp").innerHTML = hp;
         var MaxHp = 100;
         document.getElementById("Hp").style.width = hp/(MaxHp/40) + "%";
-        var damage = 10;
+        var damage = 105;
         var eHp = 100;
         document.getElementById("EHp").style.width = eHp/(MaxHp/40) + "%";
         var eMaxHp = 100;
@@ -195,9 +229,11 @@
         document.getElementById("level").innerHTML = level;
         var gold = 0;
         document.getElementById("gold").innerHTML = gold;
-        var eGold = 0;
+        var eGold = 100;
         var armor = 0;
         var eArmor = 0;
+        var eName = names[round(random(0, names.length))];
+        document.getElementById("enemyName").innerHTML = eName;
         
         // difference function
         function difference(number, max) {
@@ -209,6 +245,31 @@
             return number;
         }
         
+        // udate name function
+        function updateName() {
+            document.getElementById("playerName").innerHTML = document.getElementById("inputName").value;
+        }
+        
+        // the spend enemy money function
+        function spendMoney() {
+            while(eGold > 0) {
+                choose = round(random(0, 100));
+                eName = eArmor;
+                if(choose < (100/3) * 1 && eGold >= 50) {
+                    eMaxHp+=25;
+                    eGold-=50;
+                    eHp = eMaxHp;
+                    document.getElementById("EHp").innerHTML = eHp;
+                    document.getElementById("EHp").style.width = eHp/(eMaxHp/40) + "%";
+                }else if(choose <= (100/3) * 2 && eGold >= 50) {
+                    eDamage+=5;
+                    eGold-=50;
+                }else if(choose <= 100 && eGold >= 10) {
+                    eArmor+=1;
+                    eGold-=10;
+                }
+            }
+        }
         // play function
         function play() {
             q = round(random(0, 3));
@@ -303,6 +364,7 @@
             }
             // if the enemys has died
             if(eHp <= 0) {
+                document.getElementById("enemyName").innerHTML = eName;
                 hp = MaxHp;
                 eHp = eMaxHp;
                 level += 1;
@@ -310,6 +372,7 @@
                 gold+=100;
                 changePage(1);
                 eGold+=100;
+                spendMoney();
                 document.getElementById("Correct").style.animation = 'none';
                 document.getElementById("Correct").offsetHeight; /* trigger reflow */
                 document.getElementById("Correct").style.animation = null; 
@@ -317,19 +380,7 @@
                 hp = MaxHp;
                 eHp = eMaxHp;
             }
-            if(eGold > 0) {
-                choose = round(random(0, 100));
-                if(choose < 50) {
-                    eMaxHp+=25;
-                    eGold-=50;
-                    eHp = eMaxHp;
-                    document.getElementById("EHp").innerHTML = eHp;
-                    document.getElementById("EHp").style.width = eHp/(eMaxHp/40) + "%";
-                }else if(choose <= 100) {
-                    eDamage+=5;
-                    eGold-=50;
-                }
-            }if(q === 3) {
+            if(q === 3) {
                 a = [round(random(10 * (diff/1000), 20 * diff/1000)), round(random(5 * (diff/1000), 10 * diff/1000))];
                 document.getElementById("q").innerHTML = "What is " + a[0] + " - " + a[1];
                 var choosen = random(0, 100);
