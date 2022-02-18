@@ -219,7 +219,7 @@
         document.getElementById("Hp").innerHTML = hp;
         var MaxHp = 100;
         document.getElementById("Hp").style.width = hp/(MaxHp/40) + "%";
-        var damage = 105;
+        var damage = 10;
         var eHp = 100;
         document.getElementById("EHp").style.width = eHp/(MaxHp/40) + "%";
         var eMaxHp = 100;
@@ -364,6 +364,7 @@
             }
             // if the enemys has died
             if(eHp <= 0) {
+                eName = names[round(random(0, names.length))];
                 document.getElementById("enemyName").innerHTML = eName;
                 hp = MaxHp;
                 eHp = eMaxHp;
