@@ -2,545 +2,344 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Math</title>
+        <title>New webpage</title>
+        <style>
+            body {
+                position: fixed;
+            }
+            #canvi {
+                margin-left: -10px;
+                margin-top: -10px;
+            }
+        </style>
     </head>
-    <style>
-        body {
-            background-color: rgb(242, 245, 240);
-            font-family: arial;
-            color: rgb(0, 0, 0);
-        }
-        .center {
-            text-align: CENTER;
-            margin-bottom: 2px;
-        }
-        .centerCenter {
-            text-align: CENTER;
-            margin-top: 5%;
-        }
-        .startButton {
-            margin-left: 40%;
-            width: 20%;
-            height: 40px;
-            margin-top: 40px;
-            background-color: rgb(99, 181, 169);
-            border-radius: 2px;
-            border: none;
-            color: rgb(255, 255, 255);
-            font-size: 17px;
-        }
-        .Button {
-            margin-left: 4%;
-            width: 20%;
-            height: 40px;
-            background-color: rgb(99, 181, 169);
-            border-radius: 2px;
-            border: none;
-            float: left;
-            color: rgb(255, 255, 255);
-            font-size: 17px;
-        }
-        #inputName {
-            background-color: rgb(230, 230, 230);
-            margin-left: 35%;
-            width: 30%;
-        }
-        #ques {
-            margin-left: 15%;
-            width: 70%;
-            background-color: rgb(107, 137, 255);
-            color: rgb(255, 255, 255);
-            border-radius: 5px;
-            height: 60px;
-            line-height: 60px;
-            text-align: CENTER;
-        }
-        #Correct {
-            background-color: rgb(0, 255, 0);
-            width: 100%;
-            height: 50px;
-            position: fixed;
-            top: 50%;
-            transform: translate(0, -50%);
-            opacity: 0%;
-            text-align: CENTER;
-            color: rgb(14, 140, 0);
-            font-size: 40px;
-        }
-        #Incorrect {
-            background-color: rgb(255, 0, 0);
-            width: 100%;
-            height: 50px;
-            position: fixed;
-            top: 50%;
-            transform: translate(0, -50%);
-            opacity: 0%;
-            text-align: CENTER;
-            color: rgb(138, 0, 0);
-            font-size: 40px;
-        }
-        #Upgrade {
-            background-color: rgb(0, 255, 51);
-            width: 100%;
-            height: 50px;
-            position: fixed;
-            top: 50%;
-            transform: translate(0, -50%);
-            opacity: 0%;
-            text-align: CENTER;
-            color: rgb(12, 138, 0);
-            font-size: 40px;
-        }
-        #backgroundHp {
-            margin-left: 5%;
-            margin-bottom: 10px;
-            width: 40%;
-            height: 20px;
-            background-color: rgb(212, 212, 212);
-            position: absolute;
-            text-align: CENTER;
-            border-radius: 5px;
-        }
-        #Hp {
-            margin-left: 5%;
-            margin-bottom: 10px;
-            width: 40%;
-            height: 20px;
-            position: absolute;
-            background-color: rgb(0, 209, 136);
-            text-align: CENTER;
-            border-radius: 5px;
-        }
-        #EbackgroundHp {
-            margin-left: 50%;
-            margin-bottom: 10px;
-            width: 40%;
-            height: 20px;
-            background-color: rgb(212, 212, 212);
-            position: absolute;
-            text-align: CENTER;
-            border-radius: 5px;
-        }
-        #EHp {
-            margin-left: 50%;
-            margin-bottom: 10px;
-            width: 40%;
-            height: 20px;
-            position: absolute;
-            background-color: rgb(255, 0, 0);
-            text-align: CENTER;
-            border-radius: 5px;
-        }
-        #playerName {
-            position: absolute;
-            margin-left: 5%;
-        }
-        #enemyName {
-            position: absolute;
-            margin-left: 50%;
-        }
-        @keyframes Anim {
-            0% {
-                opacity: 0%;
-            }
-            25% {
-                opacity: 100%;
-            }
-            100% {
-                opacity: 0%;
-            }
-        }
-    </style>
     <body>
-        <div class = "scene">
-            <h1 class = "center">Math Game</h1>
-            <h2 class = "center">Name: </h2>
-            <input id = "inputName">
-            <br>
-            <button class = "startButton" onclick = "javascript: changePage(1); updateName();">Start</button>
-        </div>
-        <div class = "scene">
-            <h1 class = "center">Upgrade</h1>
-            <p class = "center"> Level: <span id = "level">1</span> || Gold: <span id = "gold">0</span></p>
-            <button class = "Button" onclick = "upgrade(['damage', 5], 50);">Damage: 50</button>
-            <button class = "Button" onclick = "upgrade(['hp', 25], 50);">Health: 50</button>
-            <button class = "Button" onclick = "upgrade(['armor', 1], 10);">Armor: 10</button>
-            <button class = "startButton" onclick = "javascript: changePage(2);">I am ready!</button>
-            <div id = "Upgrade">Upgrade Brought</div>
-        </div>
-        <div class = "scene">
-            <p id = "playerName">Name</p>
-            <p id = "enemyName">Enemy Name</p>
-            <br>
-            <br>
-            <div id = "Correct">Correct</div>
-            <div id = "Incorrect">Incorrect</div>
-            <div id = "backgroundHp"></div>
-            <div id = "Hp">100</div>
-            <div id = "EbackgroundHp"></div>
-            <div id = "EHp">100</div>
-            <br>
-            <br>
-            <div id = "ques">
-                <h3 class = "centerCenter" id = "q"></h3>
-            </div>
-            <p class = "center">Correct: <span id = "correct">0/0</span></p>
-            <p class = "center">Combo: <span id = "combo">0</span></p>
-            <p class = "center">Gold: <span id = "gold">0</span></p>
-            
-            <button class = "Button" onclick = "updateCor(1); play();"><span id = "q1">Q</span></button>
-            <button class = "Button" onclick = "updateCor(2); play();"><span id = "q2">Q</span></button>
-            <button class = "Button" onclick = "updateCor(3); play();"><span id = "q3">Q</span></button>
-            <button class = "Button" onclick = "updateCor(4); play(); "><span id = "q4">Q</span></button>
-        </div>
+        <canvas id="canvi"></canvas>
         <script>
-        // the round function
-        function round(number) {
-            return Math.round(number)
-        }
-        
-        // the random function
-        function random(min, max) {
-            return min + Math.random(0, 1) * (max - min)
-        }
-        
-        // the constrain function
-        function constrain(number, min, max) {
-            if(number < min) {
-                number = min;
-            }else if(number > max){
-                number = max;
+            // makes it more like javascript
+            var canvas = document.getElementById("canvi");
+            var ctx = canvas.getContext("2d");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            var mouseX = 0;
+            var mouseY = 0;
+            var clicked = false
+            var keys = [];
+            canvas.addEventListener("mousemove", function(e) { 
+                var cRect = canvas.getBoundingClientRect();
+                mouseX = Math.round(e.clientX - cRect.left);
+                mouseY = Math.round(e.clientY - cRect.top);
+            });
+            canvas.addEventListener("mousedown", function(e) {
+                dragged = true;
+            }, false);
+            canvas.addEventListener("mouseup", function(e) {
+                if(dragged === true) {
+                    clicked = true;
+                    dragged = false;
+                }
+            })
+            window.addEventListener("keydown", keysPressed, false);
+            window.addEventListener("keyup", keysReleased, false);
+            function keysPressed(e) {
+                // store an entry for every key pressed
+                keys[e.keyCode] = true;
+             
+                e.preventDefault();
             }
-            return number;
-        }
-        
-        // assign varibles
-        var scenes = document.getElementsByClassName('scene');
-        
-        // q & a varibles
-        var q = round(random(0, 3));
-        var a = [];
-        var cor = 0;
-        var incor = 0;
-        var rnCor = 0;
-        var diff = 1000;
-        var combo = 0;
-        var eCombo = 0;
-        // names
-        var names = [
-            "Cridse",
-            "Jagudeocse",
-            "Sparranseel",
-            "Horoocaups",
-            "Geakodo",
-            "Loluar",
-            "Weapumadillo",
-            "Cleadaguin",
-            "Lemmusu",
-            "Dreavleecs",
-            "Girida",
-            "Eagybara",
-            "Antessex",
-            "Mooblud",
-            "Baboullopse",
-            "Hedgensodee",
-            "Kleoros",
-            "Ratalo",
-            "Doumnea",
-            "Ropsomite",
-            "Xodumea",
-            "Suwaursee",
-            "Elish",
-            "Camoose",
-        ];
-        
-        // enemys, player, and level stats
-        var hp = 100;
-        document.getElementById("Hp").innerHTML = hp;
-        var MaxHp = 100;
-        document.getElementById("Hp").style.width = hp/(MaxHp/40) + "%";
-        var damage = 10;
-        var eHp = 100;
-        document.getElementById("EHp").style.width = eHp/(MaxHp/40) + "%";
-        var eMaxHp = 100;
-        document.getElementById("EHp").innerHTML = eHp;
-        var eDamage = 10;
-        var level = 1;
-        document.getElementById("level").innerHTML = level;
-        var gold = 0;
-        document.getElementById("gold").innerHTML = gold;
-        var eGold = 100;
-        var armor = 0;
-        var eArmor = 0;
-        var eName = names[round(random(0, names.length))];
-        document.getElementById("enemyName").innerHTML = eName;
-        
-        // difference function
-        function difference(number, max) {
-            if(random(0, 100) < 50) {
-                number -= round(random(1, max));
-            }else {
-                number += round(random(1, max));
+             
+            function keysReleased(e) {
+                // mark keys that were released
+                keys[e.keyCode] = false;
             }
-            return number;
-        }
-        
-        // udate name function
-        function updateName() {
-            document.getElementById("playerName").innerHTML = document.getElementById("inputName").value;
-        }
-        
-        // the spend enemy money function
-        function spendMoney() {
-            while(eGold > 0) {
-                choose = round(random(0, 100));
-                eName = eArmor;
-                if(choose < (100/3) * 1 && eGold >= 50) {
-                    eMaxHp+=25;
-                    eGold-=50;
-                    eHp = eMaxHp;
-                    document.getElementById("EHp").innerHTML = eHp;
-                    document.getElementById("EHp").style.width = eHp/(eMaxHp/40) + "%";
-                }else if(choose <= (100/3) * 2 && eGold >= 50) {
-                    eDamage+=5;
-                    eGold-=50;
-                }else if(choose <= 100 && eGold >= 10) {
-                    eArmor+=1;
-                    eGold-=10;
+            function cos(r) {
+                return Math.cos(r);
+            }
+            function sin(r) {
+                return Math.sin(r);
+            }
+            function atan2(y, x) {
+                return Math.atan2(y, x)
+            }
+            function round(num) {
+                return Math.round(num);
+            }
+            function random(min, max) {
+                return min + Math.random(0, 1) * (max - min);
+            }
+            function dist(x, y, x2, y2) {
+                var a = x - x2;
+                var b = y - y2;
+                return Math.sqrt(a * a + b * b);
+            }
+            function fill(r, g, b) {
+                ctx.fillStyle = "rgb(" + r + ", " + g + ", " + b + ")";
+            }
+            function stroke(r, g, b) {
+                ctx.strokeStyle = "rgb(" + r + ", " + g + ", " + b + ")";
+            }
+            function rect(x, y, w, h) {
+                ctx.fillRect(x, y, w, h);
+            }
+            function strokeWeight(s) {
+                ctx.lineWidth = s;
+            }
+            function eRect(x, y, w, h, col) {
+                ctx.beginPath();
+                stroke(col[0], col[1], col[2]);
+                ctx.rect(x, y, w, h);
+                ctx.stroke();
+            }
+            function start() {
+                var myVar = setInterval(draw, 5);
+            }
+            function text(txt, x, y, size) {
+                ctx.font = size + "px Arial";
+                ctx.fillText(txt, x, y);
+            }
+            function textAlign(align) {
+                ctx.textAlign = align;
+            }
+            function lerp(a, b, t) {
+                return a + (b - a) * t;
+            }
+            function dist2(a, b, d) {
+                return (a - b) > -d && (a - b) < d;
+            }
+            function ellipse(x, y, radiusX, radiusY, rotation) {
+                ctx.beginPath();
+                ctx.ellipse(x, y, radiusX, radiusY, rotation, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+            function eEllipse(x, y, radiusX, radiusY, rotation) {
+                ctx.beginPath();
+                ctx.ellipse(x, y, radiusX, radiusY, rotation, 0, 2 * Math.PI);
+                ctx.stroke();
+            }
+            function constrain(num, m, ma) {
+                if(num < m) {
+                    num = m;
+                } else if(num > ma) {
+                    num = ma;
+                }
+                return num;
+            }
+             
+        </script>
+        <script>
+            // game
+            var scene = "menu";
+            function button(x, y, w, h, t, txt) {
+                strokeWeight(3)
+                eRect(x, y, w, h, (0, 0, 0))
+                textAlign("center")
+                text(txt[0], x + w/2, y + h/2 + txt[1]/4, txt[1])
+                if(mouseX > x && mouseY > y && mouseX < x + w && mouseY < y + h && clicked) {
+                    t();
                 }
             }
-        }
-        // play function
-        function play() {
-            q = round(random(0, 3));
-            if(q === 0) {
-                a = [round(random(10 * (diff/1000), 20 * diff/1000)), round(random(10 * (diff/1000), 20 * diff/1000))];
-                document.getElementById("q").innerHTML = "What is " + a[0] + " + " + a[1];
-                var choosen = random(0, 100);
-                document.getElementById("q1").innerHTML = difference(a[0] + a[1], 10);
-                document.getElementById("q2").innerHTML = difference(a[0] + a[1], 10);
-                document.getElementById("q3").innerHTML = difference(a[0] + a[1], 10);
-                document.getElementById("q4").innerHTML = difference(a[0] + a[1], 10);
-                if(choosen < 25) {
-                    document.getElementById("q1").innerHTML = a[0] + a[1];
-                    rnCor = 1;
-                }else if(choosen < 50) {
-                    document.getElementById("q2").innerHTML = a[0] + a[1];
-                    rnCor = 2;
-                }else if(choosen < 75) {
-                    document.getElementById("q3").innerHTML = a[0] + a[1];
-                    rnCor = 3;
-                }else {
-                    document.getElementById("q4").innerHTML = a[0] + a[1];
-                    rnCor = 4;
-                }
-            }else if(q === 1) {
-                // what the answer and questions will pick from
-                a = [round(random(2 * (diff/1000), 5 * diff/1000)), round(random(2 * (diff/1000), 5 * diff/1000))];
-                
-                // change the questions to match what a choose
-                document.getElementById("q").innerHTML = "What is " + a[0] + " x " + a[1];
-                
-                // the varible for who will have the answer
-                var choosen = random(0, 100);
-                
-                // change the q's to somewhere near the answer
-                document.getElementById("q1").innerHTML = difference(a[0] * a[1], 10);
-                document.getElementById("q2").innerHTML = difference(a[0] * a[1], 10);
-                document.getElementById("q3").innerHTML = difference(a[0] * a[1], 10);
-                document.getElementById("q4").innerHTML = difference(a[0] * a[1], 10);
-                if(choosen < 25) {
-                    // if q1 has the answer
-                    document.getElementById("q1").innerHTML = a[0] * a[1];
-                    rnCor = 1;
-                }else if(choosen < 50) {
-                    // if q2 has the answer
-                    document.getElementById("q2").innerHTML = a[0] * a[1];
-                    rnCor = 2;
-                }else if(choosen < 75) {
-                    // if q3 has the answet
-                    document.getElementById("q3").innerHTML = a[0] * a[1];
-                    rnCor = 3;
-                }else {
-                    // if q4 has the answer
-                    document.getElementById("q4").innerHTML = a[0] * a[1];
-                    rnCor = 4;
-                }
-            }else if(q === 2) {
-                // different a for the question
-                a = [round(random(2 * (diff/1000), 4 * diff/1000))];
-                a.push(a[0] * round(random(2, diff/1000)))
-                
-                // make the question
-                document.getElementById("q").innerHTML = "What is " + a[1] + " / " + a[0];
-                
-                // make a varible to see which q will have the answer
-                var choosen = random(0, 100);
-                
-                // set all the q's to random varibles between the answer
-                document.getElementById("q1").innerHTML = difference(a[1] / a[0], 10);
-                document.getElementById("q2").innerHTML = difference(a[1] / a[0], 10);
-                document.getElementById("q3").innerHTML = difference(a[1] / a[0], 10);
-                document.getElementById("q4").innerHTML = difference(a[1] / a[0], 10);
-                
-                // see which q has the answer
-                if(choosen < 25) {
-                    // if q1 has the answer
-                    document.getElementById("q1").innerHTML = a[1] / a[0];
-                    rnCor = 1;
-                }else if(choosen < 50) {
-                    // if q2 has the answer
-                    document.getElementById("q2").innerHTML = a[1] / a[0];
-                    rnCor = 2;
-                }else if(choosen < 75) {
-                    // id q3 has the answer
-                    document.getElementById("q3").innerHTML = a[1] / a[0];
-                    rnCor = 3;
-                }else {
-                    // if q4 has the answer
-                    document.getElementById("q4").innerHTML = a[1] / a[0];
-                    rnCor = 4;
+            function cButton(x, y, d, t, txt) {
+                eEllipse(x, y, d, d, 0)
+                textAlign("center")
+                text(txt[0], x, y + txt[1]/4, txt[1])
+                if(dist(x, y, mouseX, mouseY) < d/2 && clicked) {
+                    t();
                 }
             }
-            // if the enemys has died
-            if(eHp <= 0) {
-                eName = names[round(random(0, names.length))];
-                document.getElementById("enemyName").innerHTML = eName;
-                hp = MaxHp;
-                eHp = eMaxHp;
-                level += 1;
-                document.getElementById("level").innerHTML = level;
-                gold+=100;
-                changePage(1);
-                eGold+=100;
-                spendMoney();
-                document.getElementById("Correct").style.animation = 'none';
-                document.getElementById("Correct").offsetHeight; /* trigger reflow */
-                document.getElementById("Correct").style.animation = null; 
-                document.getElementById("Incorrect").style.animation = 'none';
-                document.getElementById("Incorrect").offsetHeight; /* trigger reflow */
-                document.getElementById("Incorrect").style.animation = null; 
-            }else if(hp <= 0) {
-                hp = MaxHp;
-                eHp = eMaxHp;
+            var game = {
+                q1: 0,
+                q2: 0,
+                s: "-",
+                b1: 0,
+                b2: 0, 
+                b3: 0,
+                b4: 0,
+                coorect: 0,
+                diff: 10,
+                type: "Sub",
+            };
+            var player = {
+                maxHp: 100,
+                hp: 100,
+                damage: 10,
+                armor: 0,
+                reflect: 0,
+            };
+            var enemy = {
+                maxHp: 100,
+                hp: 100,
+                damage: 10,
+                armor: 0,
+                reflect: 0,
+                name: "m",
             }
-            if(q === 3) {
-                a = [round(random(10 * (diff/1000), 20 * diff/1000)), round(random(5 * (diff/1000), 10 * diff/1000))];
-                document.getElementById("q").innerHTML = "What is " + a[0] + " - " + a[1];
-                var choosen = random(0, 100);
-                document.getElementById("q1").innerHTML = difference(a[0] - a[1], 10);
-                document.getElementById("q2").innerHTML = difference(a[0] - a[1], 10);
-                document.getElementById("q3").innerHTML = difference(a[0] - a[1], 10);
-                document.getElementById("q4").innerHTML = difference(a[0] - a[1], 10);
-                if(choosen < 25) {
-                    document.getElementById("q1").innerHTML = a[0] - a[1];
-                    rnCor = 1;
-                }else if(choosen < 50) {
-                    document.getElementById("q2").innerHTML = a[0] - a[1];
-                    rnCor = 2;
-                }else if(choosen < 75) {
-                    document.getElementById("q3").innerHTML = a[0] - a[1];
-                    rnCor = 3;
-                }else {
-                    document.getElementById("q4").innerHTML = a[0] - a[1];
-                    rnCor = 4;
+            function d(difference) {
+                var d = difference;
+                if(random(0, 1) < 0.5) {
+                    difference = round(random(-d, -1));
+                } else {
+                    difference = round(random(d, 1));
+                }
+                return difference;
+            }
+            function getQuestion(t) {
+                var choose = round(random(0, 100));
+                if(game.type === "Add") {
+                    game.q1 = round(random(game.diff, game.diff * 1.5));
+                    game.q2 = round(random(game.diff, game.diff * 1.5));
+                    if(choose <= 25) {
+                        game.correct = 1;
+                        game.b1 = game.q1 + game.q2;
+                        game.b2 = game.q1 + game.q2 - d(10);
+                        game.b3 = game.q1 + game.q2 - d(10);
+                        game.b4 = game.q1 + game.q2 - d(10);
+                    } else if(choose <= 50) {
+                        game.correct = 2;
+                        game.b2 = game.q1 + game.q2;
+                        game.b1 = game.q1 + game.q2 - d(10);
+                        game.b3 = game.q1 + game.q2 - d(10);
+                        game.b4 = game.q1 + game.q2 - d(10);
+                    } else if(choose <= 75) {
+                        game.correct = 3;
+                        game.b3 = game.q1 + game.q2;
+                        game.b2 = game.q1 + game.q2 - d(10);
+                        game.b1 = game.q1 + game.q2 - d(10);
+                        game.b4 = game.q1 + game.q2 - d(10);
+                    } else if(choose <= 100) {
+                        game.correct = 4;
+                        game.b4 = game.q1 + game.q2;
+                        game.b2 = game.q1 + game.q2 - d(10);
+                        game.b3 = game.q1 + game.q2 - d(10);
+                        game.b1 = game.q1 + game.q2 - d(10);
+                    }
+                } else if(game.type === "Sub") {
+                    game.q1 = round(random(game.diff * 2, game.diff * 4));
+                    game.q2 = round(random(game.diff * 1.5, game.diff * 1.5));
+                    if(choose <= 25) {
+                        game.correct = 1;
+                        game.b1 = game.q1 - game.q2;
+                        game.b2 = game.q1 - game.q2 - d(10);
+                        game.b3 = game.q1 - game.q2 - d(10);
+                        game.b4 = game.q1 - game.q2 - d(10);
+                    } else if(choose <= 50) {
+                        game.correct = 2;
+                        game.b2 = game.q1 - game.q2;
+                        game.b1 = game.q1 - game.q2 - d(10);
+                        game.b3 = game.q1 - game.q2 - d(10);
+                        game.b4 = game.q1 - game.q2 - d(10);
+                    } else if(choose <= 75) {
+                        game.correct = 3;
+                        game.b3 = game.q1 - game.q2;
+                        game.b2 = game.q1 - game.q2 - d(10);
+                        game.b1 = game.q1 - game.q2 - d(10);
+                        game.b4 = game.q1 - game.q2 - d(10);
+                    } else if(choose <= 100) {
+                        game.correct = 4;
+                        game.b4 = game.q1 - game.q2;
+                        game.b2 = game.q1 - game.q2 - d(10);
+                        game.b3 = game.q1 - game.q2 - d(10);
+                        game.b1 = game.q1 - game.q2 - d(10);
+                    }
+                }
+                if(round(random(0, 100)) < 80 && t !== true) {
+                    player.hp-=10;
                 }
             }
-            
-            // update the gold value
-            document.getElementById("gold").innerHTML = gold;
-        }
-        
-        // update cor function
-        function updateCor(button) {
-            // check if correct
-            if(button === rnCor) {
-                // do things if correct
-                cor+=1;
-                diff+=100;
-                combo+=1;
-                eHp-=constrain(damage + round(combo/3) + round(random(0, 5)) - eArmor, 0, Infinity);
-                document.getElementById("Correct").style.animation = 'none';
-                document.getElementById("Correct").offsetHeight; /* trigger reflow */
-                document.getElementById("Correct").style.animation = null; 
-                document.getElementById("Correct").style.animation = 'Anim 2s';
-            }else {
-                // do things is not
-                incor+=1;
-                if(diff > 500) {
-                    diff-=50;
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                switch(scene) {
+                    case "menu":
+                        fill(250, 250, 250);
+                        rect(0, 0, canvas.width, canvas.height);
+                        fill(0, 0, 0);
+                        text("Math Game", canvas.width/2, canvas.height/2 - 25, 60)
+                        button(canvas.width/2 - 50, canvas.height/2 + 25, 100, 50, function() {
+                            scene = "levels";
+                            getQuestion(true);
+                        }, ["Play", 30]);
+                    break;
+                    case "levels":
+                        fill(250, 250, 250);
+                        rect(0, 0, canvas.width, canvas.height);
+                        fill(0, 0, 0);
+                        for(var i = 0; i < 8; i+=1) {
+                            cButton(canvas.width/(2.1 + cos(i * 1.1)), (canvas.height/8) * (8 - i) - 25, 20, function() {
+                                scene = "play";
+                                if(i % 2 === 0) {
+                                    game.s = "+";
+                                    game.type = "Add";
+                                }else if(i % 2 === 1) {
+                                    game.s = "-";
+                                    game.type = "Sub";;
+                                }
+                                getQuestion(true);
+                            }, [i + 1, 30]);
+                        }
+                    break;
+                    case "play":
+                        fill(250, 250, 250);
+                        rect(0, 0, canvas.width, canvas.height);
+                        fill(100, 100, 100);
+                        rect(10, 30, 200, 20);
+                        rect(10 + (canvas.width - 20 - enemy.maxHp * 2), 30, 200, 20);
+                        fill(0, 255, 0);
+                        rect(10, 30, (200/player.maxHp) * player.hp, 20);
+                        fill(255, 0, 0);
+                        rect(10 + (canvas.width - 220), 30, (200/enemy.maxHp) * enemy.hp, 20);
+                        fill(0, 0, 0);
+                        text("You", 25, 25, 25);
+                        text(enemy.name, 25 + (canvas.width - 220 ), 25, 25)
+                        text(enemy.hp, 100 + (canvas.width - 220), 47.5, 20)
+                        text(player.hp, 100, 47.5, 20)
+                        text("What is " + game.q1 + " " + game.s + " " + game.q2, canvas.width/2, canvas.height/2 - 75, 30)
+                        button(canvas.width/8 + canvas.width/5 * 0, canvas.height/2 + 25, canvas.width/6, 50, function() {
+                            if(game.correct === 1) {
+                                getQuestion();
+                                enemy.hp-=player.damage - enemy.armor;
+                            } else {
+                                getQuestion();
+                            }
+                        }, [game.b1, 30]);
+                        button(canvas.width/8 + canvas.width/5 * 1, canvas.height/2 + 25, canvas.width/6, 50, function() {
+                            if(game.correct === 2) {
+                                getQuestion();
+                                enemy.hp-=player.damage - enemy.armor;
+                            } else {
+                                getQuestion();
+                            }
+                        }, [game.b2, 30]);
+                        button(canvas.width/8 + canvas.width/5 * 2, canvas.height/2 + 25, canvas.width/6, 50, function() {
+                            if(game.correct === 3) {
+                                getQuestion();
+                                enemy.hp-=player.damage - enemy.armor;
+                            } else {
+                                getQuestion();
+                            }
+                        }, [game.b3, 30]);
+                        button(canvas.width/8 + canvas.width/5 * 3, canvas.height/2 + 25, canvas.width/6, 50, function() {
+                            if(game.correct === 4) {
+                                getQuestion();
+                                enemy.hp-=player.damage - enemy.armor;
+                            } else {
+                                getQuestion();
+                            }
+                        }, [game.b4, 30]);
+                        if(enemy.hp <= 1) {
+                            player.hp = player.maxHp;
+                            enemy.hp = enemy.maxHp;
+                            scene = "levels";
+                        } else if(player.hp <= 1) {
+                            player.hp = player.maxHp;
+                            enemy.hp = enemy.maxHp;
+                            scene = "levels"
+                        }
+                    break;
                 }
-                combo = 0;
-                document.getElementById("Incorrect").style.animation = 'none';
-                document.getElementById("Incorrect").offsetHeight; /* trigger reflow */
-                document.getElementById("Incorrect").style.animation = null; 
-                document.getElementById("Incorrect").style.animation = 'Anim 2s';
+                clicked = false;
             }
-            
-            // do a random to see if the player takes damage
-            if(round(random(0, 100)) < ((100/(cor + incor)) * cor) + round(random(-80, 20))) {
-                eCombo+=1;
-                hp-=constrain(eDamage + round(eCombo/3) + round(random(0, 5)) - armor, 0, Infinity);
-            }else {
-                eCombo = 0;
-            }
-            
-            // redo the functions
-            play();
-            
-            // change the elements to match the varibles
-            document.getElementById("correct").innerHTML = cor + " / " + incor;
-            document.getElementById("Hp").innerHTML = hp;
-            document.getElementById("Hp").style.width = hp/(MaxHp/40) + "%";
-            document.getElementById("EHp").innerHTML = eHp;
-            document.getElementById("EHp").style.width = eHp/(eMaxHp/40) + "%";
-            document.getElementById("combo").innerHTML = combo;
-        }
-        
-        // upgrade function
-        function upgrade(type, cost) {
-            // if your gold is more then the cost
-            if(gold >= cost) {
-                // if the upgrade is damage
-                if(type[0] === "damage") {
-                    damage+=type[1];
-                    gold-=cost;
-                // if the upgrade is hp
-                }else if(type[0] === "hp") {
-                    MaxHp+=type[1];
-                    gold-=cost;
-                    hp = MaxHp;
-                    document.getElementById("Hp").innerHTML = hp;
-                    document.getElementById("Hp").style.width = hp/(MaxHp/40) + "%";
-                }else if(type[0] === "armor") {
-                    armor+=type[1];
-                    gold-=cost;
-                }
-                // update the gold
-                document.getElementById("gold").innerHTML = gold;
-                // trigger animation
-                document.getElementById("Upgrade").style.animation = 'none';
-                document.getElementById("Upgrade").offsetHeight; /* trigger reflow */
-                document.getElementById("Upgrade").style.animation = null; 
-                document.getElementById("Upgrade").style.animation = 'Anim 2s';
-            }
-        }
-        
-        // change play function
-        function changePage(index) {
-            window.scroll(0, 0);
-            for (var i = 0; i < scenes.length ; i++) {
-                scenes[i].style.display = 'none';
-            }
-            scenes[index].style.display = 'block';
-        };
-        
-        // change the page
-        changePage(0);
-        
-        // load the game
-        play();
-
-    </script>
+            draw();
+            start();
+            clicked = false;
+        </script>
     </body>
 </html>
