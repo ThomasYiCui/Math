@@ -164,6 +164,11 @@
                 damage: 10,
                 armor: 0,
                 reflect: 0,
+                exp: 0,
+                lvl: 0,
+            };
+            var cam = {
+                y: 0,
             };
             var enemy = {
                 maxHp: 100,
@@ -171,7 +176,7 @@
                 damage: 10,
                 armor: 0,
                 reflect: 0,
-                name: "m",
+                name: "Thomas",
             }
             function d(difference) {
                 var d = difference;
@@ -240,17 +245,79 @@
                         game.b3 = game.q1 - game.q2 - d(10);
                         game.b1 = game.q1 - game.q2 - d(10);
                     }
+                } else if(game.type === "Mul") {
+                    game.q1 = round(random(game.diff * 0.5, game.diff));
+                    game.q2 = round(random(game.diff * 0.5, game.diff));
+                    if(choose <= 25) {
+                        game.correct = 1;
+                        game.b1 = game.q1 * game.q2;
+                        game.b2 = game.q1 * game.q2 - d(10);
+                        game.b3 = game.q1 * game.q2 - d(10);
+                        game.b4 = game.q1 * game.q2 - d(10);
+                    } else if(choose <= 50) {
+                        game.correct = 2;
+                        game.b2 = game.q1 * game.q2;
+                        game.b1 = game.q1 * game.q2 - d(10);
+                        game.b3 = game.q1 * game.q2 - d(10);
+                        game.b4 = game.q1 * game.q2 - d(10);
+                    } else if(choose <= 75) {
+                        game.correct = 3;
+                        game.b3 = game.q1 * game.q2;
+                        game.b2 = game.q1 * game.q2 - d(10);
+                        game.b1 = game.q1 * game.q2 - d(10);
+                        game.b4 = game.q1 * game.q2 - d(10);
+                    } else if(choose <= 100) {
+                        game.correct = 4;
+                        game.b4 = game.q1 * game.q2;
+                        game.b2 = game.q1 * game.q2 - d(10);
+                        game.b3 = game.q1 * game.q2 - d(10);
+                        game.b1 = game.q1 * game.q2 - d(10);
+                    }
+                } else if(game.type === "Div") {
+                    game.q2 = round(random(game.diff * 0.5, game.diff));
+                    game.q1 = game.q2 * round(random(game.diff/10, game.diff/5));
+                    if(choose <= 25) {
+                        game.correct = 1;
+                        game.b1 = game.q1 / game.q2;
+                        game.b2 = game.q1 / game.q2 - d(10);
+                        game.b3 = game.q1 / game.q2 - d(10);
+                        game.b4 = game.q1 / game.q2 - d(10);
+                    } else if(choose <= 50) {
+                        game.correct = 2;
+                        game.b2 = game.q1 / game.q2;
+                        game.b1 = game.q1 / game.q2 - d(10);
+                        game.b3 = game.q1 / game.q2 - d(10);
+                        game.b4 = game.q1 / game.q2 - d(10);
+                    } else if(choose <= 75) {
+                        game.correct = 3;
+                        game.b3 = game.q1 / game.q2;
+                        game.b2 = game.q1 / game.q2 - d(10);
+                        game.b1 = game.q1 / game.q2 - d(10);
+                        game.b4 = game.q1 / game.q2 - d(10);
+                    } else if(choose <= 100) {
+                        game.correct = 4;
+                        game.b4 = game.q1 / game.q2;
+                        game.b2 = game.q1 / game.q2 - d(10);
+                        game.b3 = game.q1 / game.q2 - d(10);
+                        game.b1 = game.q1 / game.q2 - d(10);
+                    }
                 }
                 if(round(random(0, 100)) < 80 && t !== true) {
-                    player.hp-=10;
+                    player.hp-=enemy.damage - player.armor;
                 }
+            }
+            function bg() {
+                fill(0, 150, 255);
+                rect(0, 0, canvas.width, canvas.height);
+                fill(0, 150, 0);
+                        ellipse(canvas.width/4, canvas.height - canvas.height/24, canvas.width/2, canvas.height/9, 0)
+                        ellipse(canvas.width - canvas.width/6, canvas.height - canvas.height/24, canvas.width/2, canvas.height/5, 0)
             }
             function draw() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 switch(scene) {
                     case "menu":
-                        fill(250, 250, 250);
-                        rect(0, 0, canvas.width, canvas.height);
+                        bg()
                         fill(0, 0, 0);
                         text("Math Game", canvas.width/2, canvas.height/2 - 25, 60)
                         button(canvas.width/2 - 50, canvas.height/2 + 25, 100, 50, function() {
@@ -259,76 +326,109 @@
                         }, ["Play", 30]);
                     break;
                     case "levels":
-                        fill(250, 250, 250);
-                        rect(0, 0, canvas.width, canvas.height);
+                        bg();
                         fill(0, 0, 0);
-                        for(var i = 0; i < 8; i+=1) {
-                            cButton(canvas.width/(2.1 + cos(i * 1.1)), (canvas.height/8) * (8 - i) - 25, 20, function() {
-                                scene = "play";
-                                if(i % 2 === 0) {
-                                    game.s = "+";
-                                    game.type = "Add";
-                                }else if(i % 2 === 1) {
-                                    game.s = "-";
-                                    game.type = "Sub";;
-                                }
-                                getQuestion(true);
-                            }, [i + 1, 30]);
+                        for(var y = canvas.height/50; y > -100; y-=1) {
+                            if(-cam.y + canvas.height + 50 > y * 50) {
+                                cButton(canvas.width/2 + cos(y * 16.3) * canvas.width/4, -25 + y * 50 + cam.y, 20, function() {
+                                    scene = "play";
+                                    if(Math.floor(y) % 4 === 0) {
+                                        game.s = "+";
+                                        game.type = "Add";
+                                    } else if(Math.floor(y) % 4 === 1) {
+                                        game.s = "-";
+                                        game.type = "Sub";;
+                                    } else if(Math.floor(y) % 4 === 2) {
+                                        game.s = "x";
+                                        game.type = "Mul";;
+                                    } else if(Math.floor(y) % 4 === 3) {
+                                        game.s = "/";
+                                        game.type = "Div";;
+                                    }
+                                    getQuestion(true);
+                                }, [-y + 9, 30]);
+                            }
+                        }
+                        if(keys[87] || keys[38]) {
+                            cam.y+=1;
+                        }
+                        if(keys[83] || keys[40]) {
+                            cam.y-=1;
+                            cam.y = constrain(cam.y, 0, Infinity);
                         }
                     break;
                     case "play":
-                        fill(250, 250, 250);
-                        rect(0, 0, canvas.width, canvas.height);
+                        bg();
                         fill(100, 100, 100);
                         rect(10, 30, 200, 20);
-                        rect(10 + (canvas.width - 20 - enemy.maxHp * 2), 30, 200, 20);
+                        rect(10 + (canvas.width - 220), 30, 200, 20);
                         fill(0, 255, 0);
                         rect(10, 30, (200/player.maxHp) * player.hp, 20);
                         fill(255, 0, 0);
                         rect(10 + (canvas.width - 220), 30, (200/enemy.maxHp) * enemy.hp, 20);
                         fill(0, 0, 0);
-                        text("You", 25, 25, 25);
-                        text(enemy.name, 25 + (canvas.width - 220 ), 25, 25)
-                        text(enemy.hp, 100 + (canvas.width - 220), 47.5, 20)
+                        text("You | Level: " + (player.lvl + 1), 100, 25, 20);
+                        text(enemy.name + " | Level: " + (player.lvl + 1), 25 + (canvas.width - 120), 25, 20)
+                        text(enemy.hp, 100 + (canvas.width - 200), 47.5, 20)
                         text(player.hp, 100, 47.5, 20)
                         text("What is " + game.q1 + " " + game.s + " " + game.q2, canvas.width/2, canvas.height/2 - 75, 30)
                         button(canvas.width/8 + canvas.width/5 * 0, canvas.height/2 + 25, canvas.width/6, 50, function() {
                             if(game.correct === 1) {
                                 getQuestion();
                                 enemy.hp-=player.damage - enemy.armor;
+                                game.diff+=1;
                             } else {
                                 getQuestion();
+                                game.diff-=0.5;
+                                game.diff = constrain(game.diff, 5, Infinity)
                             }
                         }, [game.b1, 30]);
                         button(canvas.width/8 + canvas.width/5 * 1, canvas.height/2 + 25, canvas.width/6, 50, function() {
                             if(game.correct === 2) {
                                 getQuestion();
                                 enemy.hp-=player.damage - enemy.armor;
+                                game.diff+=1;
                             } else {
                                 getQuestion();
+                                game.diff-=0.5;
+                                game.diff = constrain(game.diff, 5, Infinity)
                             }
                         }, [game.b2, 30]);
                         button(canvas.width/8 + canvas.width/5 * 2, canvas.height/2 + 25, canvas.width/6, 50, function() {
                             if(game.correct === 3) {
                                 getQuestion();
                                 enemy.hp-=player.damage - enemy.armor;
+                                game.diff+=1;
                             } else {
                                 getQuestion();
+                                game.diff-=0.5;
+                                game.diff = constrain(game.diff, 5, Infinity)
                             }
                         }, [game.b3, 30]);
                         button(canvas.width/8 + canvas.width/5 * 3, canvas.height/2 + 25, canvas.width/6, 50, function() {
                             if(game.correct === 4) {
                                 getQuestion();
                                 enemy.hp-=player.damage - enemy.armor;
+                                game.diff+=1;
                             } else {
                                 getQuestion();
+                                game.diff-=0.5;
+                                game.diff = constrain(game.diff, 5, Infinity)
                             }
                         }, [game.b4, 30]);
-                        if(enemy.hp <= 1) {
+                        if(enemy.hp <= 0) {
                             player.hp = player.maxHp;
                             enemy.hp = enemy.maxHp;
                             scene = "levels";
-                        } else if(player.hp <= 1) {
+                            player.exp+=10;
+                            player.lvl = Math.floor(player.exp/((player.lvl * player.lvl) * 5));
+                            player.maxHp = 100 + (player.lvl * player.lvl) * 100;
+                            player.hp = 100 + (player.lvl * player.lvl) * 100;
+                            player.damage = 10 + (player.lvl * player.lvl) * 10;
+                            enemy.damage = 10 + (player.lvl * player.lvl) * 10;
+                            enemy.maxHp = 100 + (player.lvl * player.lvl) * 100;
+                            enemy.hp = 100 + (player.lvl * player.lvl) * 100;
+                        } else if(player.hp <= 0) {
                             player.hp = player.maxHp;
                             enemy.hp = enemy.maxHp;
                             scene = "levels"
