@@ -166,6 +166,7 @@
                 reflect: 0,
                 exp: 0,
                 lvl: 0,
+                needs: 10,
             };
             var cam = {
                 y: 0,
@@ -361,11 +362,16 @@
                         bg();
                         fill(100, 100, 100);
                         rect(10, 30, 200, 20);
+                        rect(10, 60, 200, 20)
                         rect(10 + (canvas.width - 220), 30, 200, 20);
                         fill(0, 255, 0);
                         rect(10, 30, (200/player.maxHp) * player.hp, 20);
                         fill(255, 0, 0);
                         rect(10 + (canvas.width - 220), 30, (200/enemy.maxHp) * enemy.hp, 20);
+                        fill(255, 255, 0)
+                        rect(10, 60, (200/player.needs) * player.exp, 20);
+                        fill(0, 0, 0)
+                        text(Math.round(player.needs) + "/" + Math.round(player.exp), 105, 77.5, 20)
                         fill(0, 0, 0);
                         text("You | Level: " + (player.lvl + 1), 100, 25, 20);
                         text(enemy.name + " | Level: " + (player.lvl + 1), 25 + (canvas.width - 120), 25, 20)
@@ -421,7 +427,11 @@
                             enemy.hp = enemy.maxHp;
                             scene = "levels";
                             player.exp+=10;
-                            player.lvl = Math.floor(player.exp/((player.lvl * player.lvl) * 5));
+                            if(player.exp >= player.needs) {
+                                player.exp-=player.needs;
+                                player.lvl+=1;
+                                player.needs*=1.5;
+                            }
                             player.maxHp = 100 + (player.lvl * player.lvl) * 100;
                             player.hp = 100 + (player.lvl * player.lvl) * 100;
                             player.damage = 10 + (player.lvl * player.lvl) * 10;
