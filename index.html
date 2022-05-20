@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Math Game</title>
+        <title>New webpage</title>
         <style>
             body {
                 position: fixed;
@@ -132,7 +132,7 @@
     </script>
 <script>
 var saveCode = "0v0v0";
-var saveCode = prompt("Please enter your savecode. (Cancel if you dont have one)", "");;
+//var saveCode = prompt("Please enter your savecode. (Cancel if you dont have one)", "");;
 var scenes = document.getElementsByClassName('scene');
 var scene = "game";
 var game = 0;
@@ -186,6 +186,10 @@ Game.prototype.draw = function() {
         case 1:
             fill(255, 255, 255);
             text(this.numbers[0] + " - " + this.numbers[1] + " = " + this.ans, canvas.width/2, canvas.height - canvas.height/4, 20);
+        break;
+        case 2:
+            fill(255, 255, 255);
+            text(this.numbers[0] + " x " + this.numbers[1] + " = " + this.ans, canvas.width/2, canvas.height - canvas.height/4, 20);
         break;
     }
     textAlign("left");
@@ -276,7 +280,7 @@ Game.prototype.update = function() {
     }
 };
 Game.prototype.getQuestion = function() {
-    this.q = round(random(0, 1));
+    this.q = round(random(0, 2));
     switch(this.q) {
         case 0:
             this.numbers = [round(this.difficulty + round(random(-this.difficulty/2, this.difficulty/2))), round(this.difficulty + round(random(-this.difficulty/2, this.difficulty/2)))];
@@ -285,6 +289,10 @@ Game.prototype.getQuestion = function() {
         case 1:
             this.numbers = [round(this.difficulty * 3 + round(random(-this.difficulty/2, this.difficulty/2))), round(this.difficulty + round(random(-this.difficulty/2, this.difficulty/2)))]
             this.answer = this.numbers[0] - this.numbers[1];
+        break;
+        case 2:
+            this.numbers = [round(this.difficulty/2 + round(random(-this.difficulty/4, this.difficulty/4))), round(this.difficulty/2 + round(random(-this.difficulty/4, this.difficulty/4)))];
+            this.answer = this.numbers[0] * this.numbers[1];
         break;
     }
     this.ans = "";
