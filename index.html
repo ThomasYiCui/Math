@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>New webpage</title>
+        <title>Math Game</title>
         <style>
             body {
                 position: fixed;
@@ -144,8 +144,9 @@ function Game() {
     this.ans = "";
     this.keyCoolDown = 10;
     this.numbers = [];
-    this.q = round(random(0, 4));
+    this.q = round(random(0, 1));
     this.answer = 0;
+    this.questionType = 0;
     
     // misc
     this.gems = 0;
@@ -155,8 +156,12 @@ function Game() {
     this.playerMaxHp = 100;
     this.playerDmg = 10;
     this.playerLvl = 0;
+    this.playerHands = 0;
+    this.playerHandsDirX = 0;
     this.enemyHp = 100;
     this.enemyMaxHp = 100;
+    this.enemyHands = 0;
+    this.enemyHandsDirX = 0;
     this.enemyDmg = 10;
     this.enemyLvl = 0;
     this.enemysName = ["Thomas", "Kellan", "Shrey", "Paddy", "Nicolas", "Gabe", "Talia", "Anabella", "Mena", "Lucy", "Mackenzie", "Elizabeth"]
@@ -173,8 +178,16 @@ Game.prototype.draw = function() {
     
     // text of player and enemy
     textAlign("center")
-    fill(255, 255, 255);
-    text(this.numbers[0] + " + " + this.numbers[1] + " = " + this.ans, canvas.width/2, canvas.height - canvas.height/4, 20)
+    switch(this.q) {
+        case 0:
+            fill(255, 255, 255);
+            text(this.numbers[0] + " + " + this.numbers[1] + " = " + this.ans, canvas.width/2, canvas.height - canvas.height/4, 20);
+        break;
+        case 1:
+            fill(255, 255, 255);
+            text(this.numbers[0] + " - " + this.numbers[1] + " = " + this.ans, canvas.width/2, canvas.height - canvas.height/4, 20);
+        break;
+    }
     textAlign("left");
     fill(255, 255, 255);
     text("Player [" + (this.playerLvl + 1) + "]", 10, 50, 20);
@@ -183,13 +196,17 @@ Game.prototype.draw = function() {
     text(this.enemyHp + "/" + this.enemyMaxHp, canvas.width - canvas.width/2.5 - 10, 77, 20);
     
     // drawings of player and enemy
-    fill(255, 216, 156);
-    ellipse(canvas.width/2 - 12.5, canvas.height/2 - 50, 12.5, 12.5, 0);
-    ellipse(canvas.width - canvas.width/2 + 37.5, canvas.height/2 - 50, 12.5, 12.5, 0);
     fill(0, 0, 255);
     rect(canvas.width/2 - 25, canvas.height/2 - 30, 25, 50);
     fill(255, 0, 0);
     rect(canvas.width - canvas.width/2 + 25, canvas.height/2 - 30, 25, 50);
+    fill(255, 216, 156);
+    ellipse(canvas.width/2 - 12.5, canvas.height/2 - 50, 12.5, 12.5, 0);
+    ellipse(canvas.width - canvas.width/2 + 37.5, canvas.height/2 - 50, 12.5, 12.5, 0);
+    ellipse(canvas.width/2 - 12.5 + this.playerHands, canvas.height/2 - 20, 5, 5, 0);
+    ellipse(canvas.width/2 + 37.5 - this.enemyHands, canvas.height/2 - 20, 5, 5, 0);
+};
+Game.prototype.update = function() {
     // buttons
     for(var i = 0; i < 10; i+=1) {
         if(keys[48 + i] && this.keyCoolDown <= 0) {
@@ -204,6 +221,7 @@ Game.prototype.draw = function() {
     if(keys[13] && this.keyCoolDown <= 0) {
         var stop = false;
         if(Number(this.ans) === this.answer) {
+            this.playerHandsDirX+=3;
             this.enemyHp-=this.playerDmg;
             this.difficulty+=1;
             if(this.enemyHp <= 0) {
@@ -224,6 +242,7 @@ Game.prototype.draw = function() {
             this.difficulty-=0.5;
         }
         if(round(random(0, 100)) < 90 && !stop) {
+            this.enemyHandsDirX+=3;
             this.playerHp-=this.enemyDmg;
             if(this.playerHp <= 0) {
                 this.playerHp = round(100 + (this.playerLvl * 5 * this.playerLvl * 5));
@@ -239,12 +258,32 @@ Game.prototype.draw = function() {
         this.keyCoolDown = 50;
     }
     this.keyCoolDown-=1;
+    this.playerHands+=this.playerHandsDirX;
+    if(this.playerHands < 0) {
+        this.playerHands = 0;
+        this.playerHandsDirX = 0;
+    } else {
+        this.playerHandsDirX-=0.15;
+    }
+    if(this.playerHands <= 0) {
+        this.enemyHands+=this.enemyHandsDirX;
+        if(this.enemyHands < 0) {
+            this.enemyHands = 0;
+            this.enemyHandsDirX = 0;
+        } else {
+            this.enemyHandsDirX-=0.15;
+        }
+    }
 };
 Game.prototype.getQuestion = function() {
-    this.q = round(random(0, 0));
+    this.q = round(random(0, 1));
     switch(this.q) {
         case 0:
-            this.numbers = [this.difficulty + round(random(-this.difficulty/2, this.difficulty/2)), this.difficulty + round(random(-this.difficulty/2, this.difficulty/2))];
+            this.numbers = [round(this.difficulty + round(random(-this.difficulty/2, this.difficulty/2))), round(this.difficulty + round(random(-this.difficulty/2, this.difficulty/2)))];
+            this.answer = this.numbers[0] + this.numbers[1];
+        break;
+        case 1:
+            this.numbers = [round(this.difficulty * 3 + round(random(-this.difficulty/2, this.difficulty/2))), round(this.difficulty + round(random(-this.difficulty/2, this.difficulty/2)))]
             this.answer = this.numbers[0] + this.numbers[1];
         break;
     }
@@ -279,11 +318,6 @@ function button(x, y, w, h, d) {
     }
 };
 
-// circle button
-function circButton() {
-    
-};
-
 // enery thing
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -298,6 +332,7 @@ function draw() {
             fill(255, 255, 255);
             text(game.gems + " Gems", 10, 25, 20);
             game.draw();
+            game.update();
             fill(25, 25, 25);
             button(10, canvas.height - 60, 100, 50, function() {
                 alert(game.gems + "v" + game.playerLvl + "v" + game.enemyLvl);
