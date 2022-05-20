@@ -132,7 +132,7 @@
     </script>
 <script>
 var saveCode = "0v0v0";
-var saveCode = prompt("Please enter your savecode. (Cancel if you dont have one)", "");;
+//var saveCode = prompt("Please enter your savecode. (Cancel if you dont have one)", "");;
 var scenes = document.getElementsByClassName('scene');
 var scene = "game";
 var game = 0;
@@ -216,7 +216,7 @@ Game.prototype.draw = function() {
                 this.playerDmg = round(10 + (this.playerLvl * 2 * this.playerLvl * 2));
                 this.enemyHp = round(100 + (this.enemyLvl * 5 * this.enemyLvl * 5));
                 this.enemyMaxHp = this.enemyHp;
-                this.enemyDmg = round(10 + (this.playerLvl * 2 * this.playerLvl * 2));
+                this.enemyDmg = round(10 + (this.enemyLvl * 2 * this.enemyLvl * 2));
                 this.enemyName = this.enemysName[round(random(0, this.enemysName.length - 1))];
                 stop = true
             }
@@ -257,11 +257,17 @@ game.getQuestion();
 function updateSaveCode() {
     if(saveCode === '') {
         saveCode = "0v0v0"
-        saveCode = saveCode.split("v");
     }
-    game.gems = saveCode[0];
-    game.playerLvl = saveCode[1];
-    game.enemyLvl = saveCode[2];
+    saveCode = saveCode.split("v");
+    game.gems = Number(saveCode[0]);
+    game.playerLvl = Number(saveCode[1]);
+    game.enemyLvl = Number(saveCode[2]);
+    game.playerHp = round(100 + (game.playerLvl * 5 * game.playerLvl * 5));
+    game.playerMaxHp = game.playerHp;
+    game.playerDmg = round(10 + (game.playerLvl * 2 * game.playerLvl * 2));
+    game.enemyHp = round(100 + (game.enemyLvl * 5 * game.enemyLvl * 5));
+    game.enemyMaxHp = game.enemyHp;
+    game.enemyDmg = round(10 + (game.enemyLvl * 2 * game.enemyLvl * 2));
 };
 updateSaveCode();
 
