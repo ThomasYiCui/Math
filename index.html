@@ -284,7 +284,7 @@ Game.prototype.getQuestion = function() {
         break;
         case 1:
             this.numbers = [round(this.difficulty * 3 + round(random(-this.difficulty/2, this.difficulty/2))), round(this.difficulty + round(random(-this.difficulty/2, this.difficulty/2)))]
-            this.answer = this.numbers[0] + this.numbers[1];
+            this.answer = this.numbers[0] - this.numbers[1];
         break;
     }
     this.ans = "";
